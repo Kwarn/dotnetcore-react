@@ -34,13 +34,11 @@ const App = () => {
     }
     const filteredActivities = activities?.filter((a) => a.id !== activity.id);
 
-    activity.id
-      ? setActivities([activity, ...filteredActivities])
-      : setActivities([newActivity, ...activities]);
-
     if (activity.id) {
+      setActivities([activity, ...filteredActivities]);
       setSelectedActivity(activity);
     } else {
+      setActivities([newActivity, ...activities]);
       setSelectedActivity(newActivity);
     }
   };
