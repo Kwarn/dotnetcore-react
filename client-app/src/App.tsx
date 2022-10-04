@@ -49,8 +49,14 @@ const App = () => {
     setIsSubmitting(false);
   };
 
-  const handleDeleteActivity = (id: string) => {
+  const handleDeleteActivity = async (id: string) => {
+    setIsSubmitting(true);
+    await agent.Activities.delete(id);
+    if (selectedActivity?.id === id) {
+      setSelectedActivity(null);
+    }
     setActivities((prev) => prev?.filter((a) => a.id !== id));
+    setIsSubmitting(false);
   };
 
   useEffect(() => {
