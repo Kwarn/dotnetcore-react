@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { IActivity } from './types';
-import fetchActivities from './services/activities';
 import { Container } from 'semantic-ui-react';
 import NavBar from './components/NavBar';
 import ActivityDashboard from './components/ActivityDashboard';
 import { v4 as uuid } from 'uuid';
+
+import agent from './api/agent';
 
 const App = () => {
   const [activities, setActivities] = useState<IActivity[] | null | undefined>(
@@ -47,16 +48,12 @@ const App = () => {
     setActivities((prev) => prev?.filter((a) => a.id !== id));
   };
 
-  const getActivites = async () => {
-    const acts = await fetchActivities();
-    if (!acts || acts instanceof Error) {
-      return setIsError(true);
-    }
-    return setActivities(acts);
-  };
-
   useEffect(() => {
-    getActivites();
+    agent.Activities.list().then((response) => {
+      setActivities(
+        response.map((a) => ({ ...a, date: a.date.split('T')[0] })),
+      );
+    });
   }, []);
 
   return (
