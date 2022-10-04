@@ -5,11 +5,13 @@ import { IActivity } from '../types';
 interface IActivityDetailsProps {
   activity: IActivity;
   cancelSelectedActivityCb: () => void;
+  toggleEditModeCb: () => void;
 }
 
 const ActivityDetails = ({
   activity,
   cancelSelectedActivityCb,
+  toggleEditModeCb,
 }: IActivityDetailsProps) => {
   return (
     <Card fluid>
@@ -18,7 +20,7 @@ const ActivityDetails = ({
         alt="blah"
       />
       <Card.Content>
-        <Card.Header>Matthew</Card.Header>
+        <Card.Header>{activity.title}</Card.Header>
         <Card.Meta>
           <span>{activity.date}</span>
         </Card.Meta>
@@ -26,7 +28,12 @@ const ActivityDetails = ({
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths="2">
-          <Button basic color="blue" content="Edit" />
+          <Button
+            basic
+            color="blue"
+            content="Edit"
+            onClick={toggleEditModeCb}
+          />
           <Button
             basic
             color="grey"

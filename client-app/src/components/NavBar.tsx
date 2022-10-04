@@ -3,10 +3,10 @@ import { Button, Container, Menu, MenuItem } from 'semantic-ui-react';
 import logo from '../assets/logo.png';
 
 interface INavBarProps {
-  toggleFormCb: () => void;
+  showFormCb: () => void;
 }
 
-const NavBar = ({ toggleFormCb }: INavBarProps) => {
+const NavBar = ({ showFormCb }: INavBarProps) => {
   return (
     <Menu inverted fixed="top">
       <Container>
@@ -18,7 +18,7 @@ const NavBar = ({ toggleFormCb }: INavBarProps) => {
           <Button
             positive
             content="Create Activity"
-            onClick={toggleFormCb}
+            onClick={showFormCb}
           ></Button>
         </MenuItem>
       </Container>

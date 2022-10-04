@@ -4,26 +4,49 @@ import fetchActivities from './services/activities';
 import { Container } from 'semantic-ui-react';
 import NavBar from './components/NavBar';
 import ActivityDashboard from './components/ActivityDashboard';
+import { v4 as uuid } from 'uuid';
 
 const App = () => {
   const [activities, setActivities] = useState<IActivity[] | null | undefined>(
     null,
   );
-  const [isError, setIsError] = useState<boolean>(false);
+
   const [selectedActivity, setSelectedActivity] = useState<
     IActivity | null | undefined
   >(null);
 
+  const [isError, setIsError] = useState<boolean>(false);
+
   const [isFormShown, setIsFormShown] = useState<boolean>(false);
 
-  const handleSelectActivity = (id: string) => {
-    setSelectedActivity(activities?.find((a) => a.id === id));
+  const handleShowForm = () => {
+    setIsFormShown(true);
   };
-  const handleCancelSelectedActivity = () => {
-    setSelectedActivity(null);
+
+  const handleHideForm = () => {
+    setIsFormShown(false);
   };
-  const handleToggleForm = () => {
-    setIsFormShown((prev) => !prev);
+
+  const handleSubmitActivityForm = (activity: IActivity) => {
+    const newActivity = { ...activity, id: uuid() };
+    if (!activities) {
+      return setActivities([newActivity]);
+    }
+    const filteredActivities = activities?.filter((a) => a.id !== activity.id);
+
+    activity.id
+      ? setActivities([activity, ...filteredActivities])
+      : setActivities([newActivity, ...activities]);
+
+    if (activity.id) {
+      setSelectedActivity(activity);
+    } else {
+      setSelectedActivity(newActivity);
+    }
+  };
+
+  const handleDeleteActivity = (id: string) => {
+    setActivities((prev) => prev?.filter((a) => a.id !== id));
   };
 
   const getActivites = async () => {
@@ -40,7 +63,7 @@ const App = () => {
 
   return (
     <>
-      <NavBar toggleFormCb={handleToggleForm} />
+      <NavBar showFormCb={handleShowForm} />
       {isError && <p>Error fetching activities</p>}
       <Container style={{ marginTop: '7em' }}>
         {activities && (
@@ -48,9 +71,11 @@ const App = () => {
             isFormShown={isFormShown}
             activities={activities}
             selectedActivity={selectedActivity}
-            toggleFormCb={handleToggleForm}
-            selectActivityCb={handleSelectActivity}
-            handleCancelSelectedActivityCb={handleCancelSelectedActivity}
+            setSelectActivityCb={setSelectedActivity}
+            showFormCb={handleShowForm}
+            hideFormCb={handleHideForm}
+            submitActivityFormCb={handleSubmitActivityForm}
+            deleteActivityCb={handleDeleteActivity}
           />
         )}
       </Container>

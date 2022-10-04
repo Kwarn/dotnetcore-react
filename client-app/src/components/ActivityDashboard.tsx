@@ -9,35 +9,69 @@ interface IActivityDashboardProps {
   isFormShown: boolean;
   activities: IActivity[];
   selectedActivity: IActivity | null | undefined;
-  toggleFormCb: () => void;
-  selectActivityCb: (id: string) => void;
-  handleCancelSelectedActivityCb: () => void;
+  setSelectActivityCb: (activity: IActivity | null | undefined) => void;
+  showFormCb: () => void;
+  hideFormCb: () => void;
+  submitActivityFormCb: (activity: IActivity) => void;
+  deleteActivityCb: (id: string) => void;
 }
 
 const ActivityDashboard = ({
   isFormShown,
   activities,
   selectedActivity,
-  toggleFormCb,
-  selectActivityCb,
-  handleCancelSelectedActivityCb,
+  setSelectActivityCb,
+  showFormCb,
+  hideFormCb,
+  submitActivityFormCb,
+  deleteActivityCb
 }: IActivityDashboardProps) => {
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
+  const handleSelectActivity = (id: string) => {
+    setSelectActivityCb(activities?.find((a) => a.id === id));
+  };
+
+  const handleCancelSelectedActivity = () => {
+    setSelectActivityCb(null);
+  };
+
+  const handleCancelEditMode = () => {
+    setIsEditMode(false);
+    hideFormCb();
+  };
+
+  const handleEdit = () => {
+    setIsEditMode((prev) => !prev);
+    if (!isFormShown) {
+      showFormCb();
+    }
+  };
+
   return (
     <Grid>
       <Grid.Column width="10">
         <ActivityList
           activities={activities}
-          selectActivityCb={selectActivityCb}
+          selectActivityCb={handleSelectActivity}
+          deleteActivityCb={deleteActivityCb}
         />
       </Grid.Column>
       <Grid.Column width="6">
-        {selectedActivity && (
+        {selectedActivity && !isEditMode && (
           <ActivityDetails
             activity={selectedActivity}
-            cancelSelectedActivityCb={handleCancelSelectedActivityCb}
+            cancelSelectedActivityCb={handleCancelSelectedActivity}
+            toggleEditModeCb={handleEdit}
           />
         )}
-        {isFormShown && <ActivityForm toggleFormCb={toggleFormCb} />}
+        {isFormShown && (
+          <ActivityForm
+            activity={isEditMode ? selectedActivity : null}
+            cancelEditModeCb={handleCancelEditMode}
+            submitActivityFormCb={submitActivityFormCb}
+          />
+        )}
       </Grid.Column>
     </Grid>
   );

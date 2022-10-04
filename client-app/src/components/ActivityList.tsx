@@ -5,11 +5,13 @@ import { IActivity } from '../types';
 interface IActivityListProps {
   activities: IActivity[];
   selectActivityCb: (id: string) => void;
+  deleteActivityCb: (id: string) => void;
 }
 
 const ActivityList = ({
   activities,
   selectActivityCb,
+  deleteActivityCb
 }: IActivityListProps) => {
   return (
     <Segment>
@@ -32,6 +34,12 @@ const ActivityList = ({
                     content="View"
                     color="blue"
                     onClick={() => selectActivityCb(a.id)}
+                  />
+                  <Button
+                    floated="right"
+                    content="Delete"
+                    color="red"
+                    onClick={() => deleteActivityCb(a.id)}
                   />
                   <Label basic content={a.category} />
                 </Item.Extra>
