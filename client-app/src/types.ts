@@ -1,4 +1,3 @@
-
 export interface IActivity {
   id: string;
   title: string;
@@ -8,3 +7,11 @@ export interface IActivity {
   city: string;
   venue: string;
 }
+
+export type CategoryType =
+  | 'culture'
+  | 'drinks'
+  | 'film'
+  | 'food'
+  | 'music'
+  | 'travel';

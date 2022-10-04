@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Segment } from 'semantic-ui-react';
+import { Button, DropdownProps, Form, Segment } from 'semantic-ui-react';
 import { IActivity } from '../types';
 
 interface IActivityFormProps {
@@ -25,6 +25,15 @@ const ActivityForm = ({
     venue: '',
   };
 
+  const selectOptions = [
+    { key: 'culture', value: 'culture', text: 'Culture' },
+    { key: 'drinks', value: 'drinks', text: 'Drinks' },
+    { key: 'film', value: 'film', text: 'Film' },
+    { key: 'food', value: 'food', text: 'Food' },
+    { key: 'music', value: 'music', text: 'Music' },
+    { key: 'travel', value: 'travel', text: 'Travel' },
+  ];
+
   const [activity, setActivity] = useState(initialState);
 
   const handleSubmit = () => {
@@ -43,6 +52,16 @@ const ActivityForm = ({
     }));
   };
 
+  const handleSelect = (
+    e: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps,
+  ) => {
+    setActivity((prev) => ({
+      ...prev,
+      category: data.value as string,
+    }));
+  };
+
   return (
     <Segment clearing>
       <Form onSubmit={handleSubmit} autoComplete="off">
@@ -58,11 +77,12 @@ const ActivityForm = ({
           name="description"
           onChange={handleInputChange}
         />
-        <Form.Input
+        <Form.Select
           placeholder="Category"
           value={activity.category}
           name="category"
-          onChange={handleInputChange}
+          options={selectOptions}
+          onChange={handleSelect}
         />
         <Form.Input
           placeholder="Date"
@@ -83,7 +103,13 @@ const ActivityForm = ({
           name="venue"
           onChange={handleInputChange}
         />
-        <Button loading={isSubmitting} floated="right" positive type="submit" content="Submit" />
+        <Button
+          loading={isSubmitting}
+          floated="right"
+          positive
+          type="submit"
+          content="Submit"
+        />
         <Button
           floated="right"
           type="button"
