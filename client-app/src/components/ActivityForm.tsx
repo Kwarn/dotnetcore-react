@@ -1,21 +1,13 @@
-import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext, useState } from 'react';
 import { Button, DropdownProps, Form, Segment } from 'semantic-ui-react';
-import { IActivity } from '../types';
+import { StoreContext } from '../stores/store';
 
-interface IActivityFormProps {
-  isSubmitting: boolean;
-  activity: IActivity | null | undefined;
-  cancelEditModeCb: () => void;
-  submitActivityFormCb: (activity: IActivity) => void;
-}
-
-const ActivityForm = ({
-  isSubmitting,
-  activity: selectedActivity,
-  cancelEditModeCb,
-  submitActivityFormCb,
-}: IActivityFormProps) => {
-  const initialState = selectedActivity ?? {
+const ActivityForm = () => {
+  const { activityStore } = useContext(StoreContext);
+  const { selectedActivity, submitting, updateActivity, createActivity, closeForm } =
+    activityStore;
+  let initialState = selectedActivity ?? {
     id: '',
     title: '',
     category: '',
@@ -37,8 +29,9 @@ const ActivityForm = ({
   const [activity, setActivity] = useState(initialState);
 
   const handleSubmit = () => {
-    submitActivityFormCb(activity);
-    cancelEditModeCb();
+    activity.id
+      ? updateActivity(activity)
+      : createActivity(activity);
   };
 
   const handleInputChange = (
@@ -104,7 +97,7 @@ const ActivityForm = ({
           onChange={handleInputChange}
         />
         <Button
-          loading={isSubmitting}
+          loading={submitting}
           floated="right"
           positive
           type="submit"
@@ -114,11 +107,11 @@ const ActivityForm = ({
           floated="right"
           type="button"
           content="Cancel"
-          onClick={cancelEditModeCb}
+          onClick={() => closeForm()}
         />
       </Form>
     </Segment>
   );
 };
 
-export default ActivityForm;
+export default observer(ActivityForm);

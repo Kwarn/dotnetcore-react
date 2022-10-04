@@ -1,18 +1,17 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 import { Card, Image, Button } from 'semantic-ui-react';
+import { StoreContext } from '../stores/store';
 import { IActivity } from '../types';
 
 interface IActivityDetailsProps {
   activity: IActivity;
-  cancelSelectedActivityCb: () => void;
-  toggleEditModeCb: () => void;
 }
 
-const ActivityDetails = ({
-  activity,
-  cancelSelectedActivityCb,
-  toggleEditModeCb,
-}: IActivityDetailsProps) => {
+const ActivityDetails = ({ activity }: IActivityDetailsProps) => {
+  const { activityStore } = useContext(StoreContext);
+  const { openForm, cancelSelectedActivity } = activityStore;
+
   return (
     <Card fluid>
       <Image
@@ -32,13 +31,13 @@ const ActivityDetails = ({
             basic
             color="blue"
             content="Edit"
-            onClick={toggleEditModeCb}
+            onClick={() => openForm(activity.id)}
           />
           <Button
             basic
             color="grey"
             content="Cancel"
-            onClick={cancelSelectedActivityCb}
+            onClick={() => cancelSelectedActivity()}
           />
         </Button.Group>
       </Card.Content>
@@ -46,4 +45,4 @@ const ActivityDetails = ({
   );
 };
 
-export default ActivityDetails;
+export default observer(ActivityDetails);

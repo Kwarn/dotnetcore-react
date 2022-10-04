@@ -1,12 +1,11 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 import { Button, Container, Menu, MenuItem } from 'semantic-ui-react';
 import logo from '../assets/logo.png';
+import { StoreContext } from '../stores/store';
 
-interface INavBarProps {
-  showFormCb: () => void;
-}
-
-const NavBar = ({ showFormCb }: INavBarProps) => {
+const NavBar = () => {
+  const { activityStore } = useContext(StoreContext);
   return (
     <Menu inverted fixed="top">
       <Container>
@@ -18,7 +17,7 @@ const NavBar = ({ showFormCb }: INavBarProps) => {
           <Button
             positive
             content="Create Activity"
-            onClick={showFormCb}
+            onClick={() => activityStore.openForm()}
           ></Button>
         </MenuItem>
       </Container>
@@ -26,4 +25,4 @@ const NavBar = ({ showFormCb }: INavBarProps) => {
   );
 };
 
-export default NavBar;
+export default observer(NavBar);

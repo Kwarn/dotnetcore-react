@@ -1,44 +1,40 @@
-import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext, useState } from 'react';
 import { SyntheticEvent } from 'react';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
+import { StoreContext } from '../stores/store';
 import { IActivity } from '../types';
 
 interface IActivityListProps {
-  isSubmitting: boolean;
   activities: IActivity[];
-  selectActivityCb: (id: string) => void;
-  deleteActivityCb: (id: string) => void;
 }
 
-const ActivityList = ({
-  isSubmitting,
-  activities,
-  selectActivityCb,
-  deleteActivityCb,
-}: IActivityListProps) => {
-  const [targetButton, setTargetButton] = useState<string>('');
+const ActivityList = ({ activities }: IActivityListProps) => {
+  const { activityStore } = useContext(StoreContext);
+  const { selectActivity, loading, deleteActivity } = activityStore;
+  const [targetButtonId, setTargetButtonId] = useState<string>('');
 
   const handleActivityDelete = (
     e: SyntheticEvent<HTMLButtonElement>,
     id: string,
   ) => {
-    setTargetButton(e.currentTarget.name);
-    deleteActivityCb(id);
+    setTargetButtonId(e.currentTarget.name);
+    deleteActivity(id)
   };
 
   return (
     <Segment>
       <Item.Group divided>
         {activities &&
-          activities.map((a) => (
-            <Item key={a.id}>
+          activities.map((activity) => (
+            <Item key={activity.id}>
               <Item.Content>
-                <Item.Header>{a.title}</Item.Header>
-                <Item.Meta>{a.date}</Item.Meta>
+                <Item.Header>{activity.title}</Item.Header>
+                <Item.Meta>{activity.date}</Item.Meta>
                 <Item.Description>
-                  <div>{a.description}</div>
+                  <div>{activity.description}</div>
                   <div>
-                    {a.city}, {a.venue}
+                    {activity.city}, {activity.venue}
                   </div>
                 </Item.Description>
                 <Item.Extra>
@@ -46,17 +42,17 @@ const ActivityList = ({
                     floated="right"
                     content="View"
                     color="blue"
-                    onClick={() => selectActivityCb(a.id)}
+                    onClick={() => selectActivity(activity.id)}
                   />
                   <Button
-                    name={a.id}
-                    loading={isSubmitting && targetButton === a.id}
+                    name={activity.id}
+                    loading={loading && targetButtonId === activity.id}
                     floated="right"
                     content="Delete"
                     color="red"
-                    onClick={(e) => handleActivityDelete(e, a.id)}
+                    onClick={(e) => handleActivityDelete(e, activity.id)}
                   />
-                  <Label basic content={a.category} />
+                  <Label basic content={activity.category} />
                 </Item.Extra>
               </Item.Content>
             </Item>
@@ -66,4 +62,4 @@ const ActivityList = ({
   );
 };
 
-export default ActivityList;
+export default observer(ActivityList);
