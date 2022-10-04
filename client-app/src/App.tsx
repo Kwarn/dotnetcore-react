@@ -10,18 +10,15 @@ import LoadingSpinner from './components/LoadingSpinner';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const [activities, setActivities] = useState<IActivity[] | null | undefined>(
     null,
   );
-
   const [selectedActivity, setSelectedActivity] = useState<
     IActivity | null | undefined
   >(null);
-
   const [isError, setIsError] = useState<boolean>(false);
-
   const [isFormShown, setIsFormShown] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleShowForm = () => {
     setIsFormShown(true);
@@ -31,20 +28,25 @@ const App = () => {
     setIsFormShown(false);
   };
 
-  const handleSubmitActivityForm = (activity: IActivity) => {
-    const newActivity = { ...activity, id: uuid() };
+  const handleSubmitActivityForm = async (activity: IActivity) => {
+    setIsSubmitting(true);
+    const activityWithId = { ...activity, id: uuid() };
     if (!activities) {
-      return setActivities([newActivity]);
+      return setActivities([activityWithId]);
     }
+
     const filteredActivities = activities?.filter((a) => a.id !== activity.id);
 
     if (activity.id) {
+      await agent.Activities.update(activity);
       setActivities([activity, ...filteredActivities]);
       setSelectedActivity(activity);
     } else {
-      setActivities([newActivity, ...activities]);
-      setSelectedActivity(newActivity);
+      await agent.Activities.create(activityWithId);
+      setActivities([activityWithId, ...activities]);
+      setSelectedActivity(activityWithId);
     }
+    setIsSubmitting(false);
   };
 
   const handleDeleteActivity = (id: string) => {
@@ -72,6 +74,7 @@ const App = () => {
         <Container style={{ marginTop: '7em' }}>
           {activities && (
             <ActivityDashboard
+              isSubmitting={isSubmitting}
               isFormShown={isFormShown}
               activities={activities}
               selectedActivity={selectedActivity}

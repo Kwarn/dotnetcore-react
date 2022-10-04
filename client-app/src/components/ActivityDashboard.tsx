@@ -6,6 +6,7 @@ import ActivityForm from './ActivityForm';
 import ActivityList from './ActivityList';
 
 interface IActivityDashboardProps {
+  isSubmitting: boolean;
   isFormShown: boolean;
   activities: IActivity[];
   selectedActivity: IActivity | null | undefined;
@@ -17,6 +18,7 @@ interface IActivityDashboardProps {
 }
 
 const ActivityDashboard = ({
+  isSubmitting,
   isFormShown,
   activities,
   selectedActivity,
@@ -24,7 +26,7 @@ const ActivityDashboard = ({
   showFormCb,
   hideFormCb,
   submitActivityFormCb,
-  deleteActivityCb
+  deleteActivityCb,
 }: IActivityDashboardProps) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
@@ -67,6 +69,7 @@ const ActivityDashboard = ({
         )}
         {isFormShown && (
           <ActivityForm
+            isSubmitting={isSubmitting}
             activity={isEditMode ? selectedActivity : null}
             cancelEditModeCb={handleCancelEditMode}
             submitActivityFormCb={submitActivityFormCb}

@@ -3,12 +3,14 @@ import { Button, Form, Segment } from 'semantic-ui-react';
 import { IActivity } from '../types';
 
 interface IActivityFormProps {
+  isSubmitting: boolean;
   activity: IActivity | null | undefined;
   cancelEditModeCb: () => void;
   submitActivityFormCb: (activity: IActivity) => void;
 }
 
 const ActivityForm = ({
+  isSubmitting,
   activity: selectedActivity,
   cancelEditModeCb,
   submitActivityFormCb,
@@ -26,7 +28,6 @@ const ActivityForm = ({
   const [activity, setActivity] = useState(initialState);
 
   const handleSubmit = () => {
-    console.log(activity);
     submitActivityFormCb(activity);
     cancelEditModeCb();
   };
@@ -82,7 +83,7 @@ const ActivityForm = ({
           name="venue"
           onChange={handleInputChange}
         />
-        <Button floated="right" positive type="submit" content="Submit" />
+        <Button loading={isSubmitting} floated="right" positive type="submit" content="Submit" />
         <Button
           floated="right"
           type="button"
