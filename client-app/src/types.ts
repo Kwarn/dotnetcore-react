@@ -1,9 +1,10 @@
-export interface Activity {
+
+export interface IActivity {
   id: string;
   title: string;
-  date: Date;
+  date: string;
   description: string;
-  catagory: string;
+  category: string;
   city: string;
   venue: string;
 }

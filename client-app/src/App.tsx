@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Activity } from './types';
+import { IActivity } from './types';
 import fetchActivities from './services/activities';
-import { Header, List } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
+import NavBar from './components/NavBar';
+import ActivityDashboard from './components/ActivityDashboard';
 
 const App = () => {
-  const [activities, setActivities] = useState<Activity[]>();
+  const [activities, setActivities] = useState<IActivity[] | null | undefined>(
+    null,
+  );
   const [isError, setIsError] = useState<boolean>(false);
+  const [selectedActivity, setSelectedActivity] = useState<
+    IActivity | null | undefined
+  >(null);
+
+  const [isFormShown, setIsFormShown] = useState<boolean>(false);
+
+  const handleSelectActivity = (id: string) => {
+    setSelectedActivity(activities?.find((a) => a.id === id));
+  };
+  const handleCancelSelectedActivity = () => {
+    setSelectedActivity(null);
+  };
+  const handleToggleForm = () => {
+    setIsFormShown((prev) => !prev);
+  };
 
   const getActivites = async () => {
     const acts = await fetchActivities();
@@ -20,15 +39,22 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
-      <Header as="h2" icon="users" content="Reactivities" />
+    <>
+      <NavBar toggleFormCb={handleToggleForm} />
       {isError && <p>Error fetching activities</p>}
-
-      <List>
-        {activities &&
-          activities.map((a) => <List.Item key={a.id}>{a.title}</List.Item>)}
-      </List>
-    </div>
+      <Container style={{ marginTop: '7em' }}>
+        {activities && (
+          <ActivityDashboard
+            isFormShown={isFormShown}
+            activities={activities}
+            selectedActivity={selectedActivity}
+            toggleFormCb={handleToggleForm}
+            selectActivityCb={handleSelectActivity}
+            handleCancelSelectedActivityCb={handleCancelSelectedActivity}
+          />
+        )}
+      </Container>
+    </>
   );
 };
 
