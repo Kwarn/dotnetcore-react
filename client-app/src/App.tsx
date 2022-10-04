@@ -6,8 +6,11 @@ import ActivityDashboard from './components/ActivityDashboard';
 import { v4 as uuid } from 'uuid';
 
 import agent from './api/agent';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const [activities, setActivities] = useState<IActivity[] | null | undefined>(
     null,
   );
@@ -56,26 +59,32 @@ const App = () => {
     });
   }, []);
 
-  return (
-    <>
-      <NavBar showFormCb={handleShowForm} />
-      {isError && <p>Error fetching activities</p>}
-      <Container style={{ marginTop: '7em' }}>
-        {activities && (
-          <ActivityDashboard
-            isFormShown={isFormShown}
-            activities={activities}
-            selectedActivity={selectedActivity}
-            setSelectActivityCb={setSelectedActivity}
-            showFormCb={handleShowForm}
-            hideFormCb={handleHideForm}
-            submitActivityFormCb={handleSubmitActivityForm}
-            deleteActivityCb={handleDeleteActivity}
-          />
-        )}
-      </Container>
-    </>
-  );
+  useEffect(() => {
+    if (activities) setIsLoading(false);
+  }, [activities]);
+
+  if (isLoading) return <LoadingSpinner content={'Loading App'} />;
+  else
+    return (
+      <>
+        <NavBar showFormCb={handleShowForm} />
+        {isError && <p>Error fetching activities</p>}
+        <Container style={{ marginTop: '7em' }}>
+          {activities && (
+            <ActivityDashboard
+              isFormShown={isFormShown}
+              activities={activities}
+              selectedActivity={selectedActivity}
+              setSelectActivityCb={setSelectedActivity}
+              showFormCb={handleShowForm}
+              hideFormCb={handleHideForm}
+              submitActivityFormCb={handleSubmitActivityForm}
+              deleteActivityCb={handleDeleteActivity}
+            />
+          )}
+        </Container>
+      </>
+    );
 };
 
 export default App;
