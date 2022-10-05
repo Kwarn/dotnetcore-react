@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button, Container, Menu, MenuItem } from 'semantic-ui-react';
 import logo from '../assets/logo.png';

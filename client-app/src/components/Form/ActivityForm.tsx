@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { v4 as uuid } from 'uuid';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Button, DropdownProps, Form, Segment } from 'semantic-ui-react';
-import { StoreContext } from '../stores/store';
-import { IActivity } from '../types';
-import LoadingSpinner from './LoadingSpinner';
+import { StoreContext } from '../../stores/store';
+import { IActivity } from '../../types';
+import LoadingSpinner from '../LoadingSpinner';
 
 const ActivityForm = () => {
   const { activityStore } = useContext(StoreContext);
@@ -83,7 +83,7 @@ const ActivityForm = () => {
   }
 
   return (
-    <Segment clearing>
+    <Segment clearing style={{ marginTop: '7em' }}>
       <Form onSubmit={handleSubmit} autoComplete="off">
         <Form.Input
           placeholder="Title"

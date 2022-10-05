@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
-import { StoreContext } from '../stores/store';
+import { StoreContext } from '../../stores/store';
 import ActivityList from './ActivityList';
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSpinner from '../LoadingSpinner';
+import ActivityFilters from './ActivityFilters';
 
 const ActivityDashboard = () => {
   const { activityStore } = useContext(StoreContext);
@@ -24,7 +25,7 @@ const ActivityDashboard = () => {
         <ActivityList />
       </Grid.Column>
       <Grid.Column width="6">
-        <h2>Activity filter</h2>
+        <ActivityFilters />
       </Grid.Column>
     </Grid>
   );

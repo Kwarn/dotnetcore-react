@@ -1,12 +1,11 @@
-import React from 'react';
 import { Container } from 'semantic-ui-react';
 import NavBar from './components/NavBar';
-import ActivityDashboard from './components/ActivityDashboard';
+import ActivityDashboard from './components/Dashboard/ActivityDashboard';
 import { observer } from 'mobx-react-lite';
 import HomePage from './components/HomePage';
-import ActivityForm from './components/ActivityForm';
+import ActivityForm from './components/Form/ActivityForm';
 import { Route, useLocation } from 'react-router-dom';
-import ActivityDetails from './components/ActivityDetails';
+import ActivityDetails from './components/Details/ActivityDetails';
 
 const App = () => {
   const location = useLocation();
