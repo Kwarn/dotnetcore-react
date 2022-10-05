@@ -21,9 +21,7 @@ const App = () => {
       <>
         <NavBar />
         <Container style={{ marginTop: '7em' }}>
-          {activityStore.activities && (
-            <ActivityDashboard activities={activityStore.activities} />
-          )}
+          {activityStore.activitiesByDate && <ActivityDashboard />}
         </Container>
       </>
     );

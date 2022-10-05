@@ -3,15 +3,11 @@ import React, { useContext, useState } from 'react';
 import { SyntheticEvent } from 'react';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
 import { StoreContext } from '../stores/store';
-import { IActivity } from '../types';
 
-interface IActivityListProps {
-  activities: IActivity[];
-}
 
-const ActivityList = ({ activities }: IActivityListProps) => {
+const ActivityList = () => {
   const { activityStore } = useContext(StoreContext);
-  const { selectActivity, loading, deleteActivity } = activityStore;
+  const { selectActivity, loading, deleteActivity, activitiesByDate } = activityStore;
   const [targetButtonId, setTargetButtonId] = useState<string>('');
 
   const handleActivityDelete = (
@@ -25,8 +21,8 @@ const ActivityList = ({ activities }: IActivityListProps) => {
   return (
     <Segment>
       <Item.Group divided>
-        {activities &&
-          activities.map((activity) => (
+        {activitiesByDate &&
+          activitiesByDate.map((activity) => (
             <Item key={activity.id}>
               <Item.Content>
                 <Item.Header>{activity.title}</Item.Header>

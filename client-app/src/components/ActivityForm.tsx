@@ -5,7 +5,7 @@ import { StoreContext } from '../stores/store';
 
 const ActivityForm = () => {
   const { activityStore } = useContext(StoreContext);
-  const { selectedActivity, submitting, updateActivity, createActivity, closeForm } =
+  const { selectedActivity, loading, updateActivity, createActivity, closeForm } =
     activityStore;
   let initialState = selectedActivity ?? {
     id: '',
@@ -97,7 +97,7 @@ const ActivityForm = () => {
           onChange={handleInputChange}
         />
         <Button
-          loading={submitting}
+          loading={loading}
           floated="right"
           positive
           type="submit"

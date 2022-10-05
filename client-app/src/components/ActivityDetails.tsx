@@ -2,28 +2,23 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import { Card, Image, Button } from 'semantic-ui-react';
 import { StoreContext } from '../stores/store';
-import { IActivity } from '../types';
 
-interface IActivityDetailsProps {
-  activity: IActivity;
-}
-
-const ActivityDetails = ({ activity }: IActivityDetailsProps) => {
+const ActivityDetails = () => {
   const { activityStore } = useContext(StoreContext);
-  const { openForm, cancelSelectedActivity } = activityStore;
+  const { openForm, cancelSelectedActivity, selectedActivity } = activityStore;
 
   return (
     <Card fluid>
       <Image
-        src={require(`../assets/categoryImages/${activity.category.toLowerCase()}.jpg`)}
+        src={require(`../assets/categoryImages/${selectedActivity?.category.toLowerCase()}.jpg`)}
         alt="blah"
       />
       <Card.Content>
-        <Card.Header>{activity.title}</Card.Header>
+        <Card.Header>{selectedActivity?.title}</Card.Header>
         <Card.Meta>
-          <span>{activity.date}</span>
+          <span>{selectedActivity?.date}</span>
         </Card.Meta>
-        <Card.Description>{activity.description}</Card.Description>
+        <Card.Description>{selectedActivity?.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths="2">
@@ -31,7 +26,7 @@ const ActivityDetails = ({ activity }: IActivityDetailsProps) => {
             basic
             color="blue"
             content="Edit"
-            onClick={() => openForm(activity.id)}
+            onClick={() => openForm(selectedActivity?.id)}
           />
           <Button
             basic
