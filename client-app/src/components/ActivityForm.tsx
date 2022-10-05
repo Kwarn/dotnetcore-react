@@ -1,13 +1,26 @@
+import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import React, { useContext, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { Button, DropdownProps, Form, Segment } from 'semantic-ui-react';
 import { StoreContext } from '../stores/store';
+import { IActivity } from '../types';
+import LoadingSpinner from './LoadingSpinner';
 
 const ActivityForm = () => {
   const { activityStore } = useContext(StoreContext);
-  const { selectedActivity, loading, updateActivity, createActivity, closeForm } =
-    activityStore;
-  let initialState = selectedActivity ?? {
+  const {
+    loading,
+    loadingInitial,
+    loadActivity,
+    createActivity,
+    updateActivity,
+  } = activityStore;
+
+  const { id } = useParams<{ id: string }>();
+  const history = useHistory();
+
+  const [activity, setActivity] = useState<IActivity>({
     id: '',
     title: '',
     category: '',
@@ -15,7 +28,13 @@ const ActivityForm = () => {
     date: '',
     city: '',
     venue: '',
-  };
+  });
+
+  useEffect(() => {
+    if (id) {
+      loadActivity(id).then((activity) => setActivity(activity!));
+    }
+  }, [id, loadActivity]);
 
   const selectOptions = [
     { key: 'culture', value: 'culture', text: 'Culture' },
@@ -26,12 +45,16 @@ const ActivityForm = () => {
     { key: 'travel', value: 'travel', text: 'Travel' },
   ];
 
-  const [activity, setActivity] = useState(initialState);
-
   const handleSubmit = () => {
-    activity.id
-      ? updateActivity(activity)
-      : createActivity(activity);
+    if (activity.id.length === 0) {
+      let newActivity = { ...activity, id: uuid() };
+      return createActivity(newActivity).then(() =>
+        history.push(`/activities/${newActivity.id}`),
+      );
+    }
+    updateActivity(activity).then(() =>
+      history.push(`/activities/${activity.id}`),
+    );
   };
 
   const handleInputChange = (
@@ -54,6 +77,10 @@ const ActivityForm = () => {
       category: data.value as string,
     }));
   };
+
+  if (loadingInitial) {
+    return <LoadingSpinner content="Loading activity..." />;
+  }
 
   return (
     <Segment clearing>
@@ -104,10 +131,11 @@ const ActivityForm = () => {
           content="Submit"
         />
         <Button
+          as={Link}
+          to="/activities"
           floated="right"
           type="button"
           content="Cancel"
-          onClick={() => closeForm()}
         />
       </Form>
     </Segment>
