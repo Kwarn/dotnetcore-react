@@ -15,3 +15,9 @@ export type CategoryType =
   | 'food'
   | 'music'
   | 'travel';
+
+export interface ServerError {
+  statusCode: number;
+  message: string;
+  details: string;
+}

@@ -11,6 +11,7 @@ const NavBar = () => {
           <img src={logo} alt="logo" style={{ marginRight: 20 }} />
         </Menu.Item>
         <MenuItem as={NavLink} to="/activities" name="Activities"></MenuItem>
+        <MenuItem as={NavLink} to="/errors" name="Errors"></MenuItem>
         <MenuItem>
           <Button
             positive
