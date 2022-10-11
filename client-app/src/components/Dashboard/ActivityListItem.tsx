@@ -1,13 +1,13 @@
-import { Link } from 'react-router-dom';
-import { Button, Icon, Item, Segment } from 'semantic-ui-react';
-import { IActivity } from '../../types';
+import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import { Button, Icon, Item, Segment } from "semantic-ui-react";
+import { IActivity } from "../../types";
 
 interface IActivityListItemProps {
   activity: IActivity;
 }
 
 const ActivityListItem = ({ activity }: IActivityListItemProps) => {
-
   return (
     <Segment.Group>
       <Segment>
@@ -16,7 +16,7 @@ const ActivityListItem = ({ activity }: IActivityListItemProps) => {
             <Item.Image
               size="tiny"
               circular
-              src={require('../../assets/user.png')}
+              src={require("../../assets/user.png")}
             />
             <Item.Content>
               <Item.Header as={Link} to={`/activities/${activity.id}`}>
@@ -29,7 +29,7 @@ const ActivityListItem = ({ activity }: IActivityListItemProps) => {
       </Segment>
       <Segment>
         <span>
-          <Icon name="clock" /> {activity.date}
+          <Icon name="clock" /> {format(activity.date!, 'dd MMM yyyy h:mm aa')}
           <Icon name="marker" /> {activity.venue}
         </span>
       </Segment>
