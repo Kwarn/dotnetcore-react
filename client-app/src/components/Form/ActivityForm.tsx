@@ -5,7 +5,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import { StoreContext } from "../../stores/store";
 import { IActivity } from "../../types";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../Common/LoadingSpinner";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import TextInput from "../Common/TextInput";

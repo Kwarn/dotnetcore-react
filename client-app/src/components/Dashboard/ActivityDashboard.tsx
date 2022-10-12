@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { StoreContext } from '../../stores/store';
 import ActivityList from './ActivityList';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../Common/LoadingSpinner';
 import ActivityFilters from './ActivityFilters';
 
 const ActivityDashboard = () => {

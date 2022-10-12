@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
 import { StoreContext } from '../../stores/store';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../Common/LoadingSpinner';
 import ActivityDetailsChat from './ActivityDetailsChat';
 import ActivityDetailsHeader from './ActivityDetailsHeader';
 import ActivityDetailsInfo from './ActivityDetailsInfo';

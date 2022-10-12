@@ -1,8 +1,8 @@
 import { Container } from 'semantic-ui-react';
-import NavBar from './components/NavBar';
+import NavBar from './components/Navigation/NavBar';
 import ActivityDashboard from './components/Dashboard/ActivityDashboard';
 import { observer } from 'mobx-react-lite';
-import HomePage from './components/HomePage';
+import HomePage from './components/Home/HomePage';
 import ActivityForm from './components/Form/ActivityForm';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import ActivityDetails from './components/Details/ActivityDetails';
