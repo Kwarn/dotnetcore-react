@@ -8,10 +8,10 @@ import { IActivity } from "../../types";
 import LoadingSpinner from "../LoadingSpinner";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import TextInput from "./TextInput";
-import SelectInput from "./SelectInput";
+import TextInput from "../Common/TextInput";
+import SelectInput from "../Common/SelectInput";
 import DatePicker from "./DatePicker";
-import TextArea from "./TextArea";
+import TextArea from "../Common/TextArea";
 
 const ActivityForm = () => {
   const { activityStore } = useContext(StoreContext);
